@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>TimeFlow | Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="body-dark">
+    <header class="header header-app">
+        <div class="logo">⏱️Daily Time-Tracker</div>
+        <div class="header-right">
+            <div id="user-email" class="user-email"></div>
+            <button id="logout-btn" class="btn-ghost-small">Logout</button>
+        </div>
+    </header>
+
+    <main class="app-container">
+        <!-- Activity Panel -->
+        <section class="panel">
+            <h2>Daily Activities</h2>
+            <p class="subtitle">Log what you do and how long it takes.</p>
+
+            <div class="date-row">
+                <label for="date-picker">Select date</label>
+                <input type="date" id="date-picker" />
+            </div>
+
+            <div class="summary-row">
+                <div class="summary-card">
+                    <h3>Total Minutes</h3>
+                    <p id="total-minutes">0</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Remaining</h3>
+                    <p id="remaining-minutes">1440</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Activities</h3>
+                    <p id="activity-count">0</p>
+                </div>
+            </div>
+
+            <form id="activity-form" class="form form-inline">
+                <div class="form-group">
+                    <label for="activity-name">Activity</label>
+                    <input id="activity-name" type="text" required placeholder="e.g., Deep work" />
+                </div>
+                <div class="form-group">
+                    <label for="activity-category">Category</label>
+                    <select id="activity-category">
+                        <option value="Work">Work</option>
+                        <option value="Study">Study</option>
+                        <option value="Sleep">Sleep</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Exercise">Exercise</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="activity-duration">Minutes</label>
+                    <input id="activity-duration" type="number" min="1" max="1440" required />
+                </div>
+                <button id="activity-submit-btn" type="submit" class="btn-primary">
+                    Add Activity
+                </button>
+            </form>
+
+            <p id="activity-error" class="error-text"></p>
+
+            <div class="table-wrapper">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Activity</th>
+                            <th>Category</th>
+                            <th>Minutes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="activity-list">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Analytics Panel -->
+        <section class="panel" id="analytics-section">
+            <div class="panel-header">
+                <div>
+                    <h2>Daily Analytics</h2>
+                    <p class="subtitle">
+                        Visual breakdown of your time for <span id="analytics-date-label"></span>.
+                    </p>
+                </div>
+                <button id="analyse-btn" class="btn-secondary" disabled>
+                    Analyse Day
+                </button>
+            </div>
+
+            <div id="no-data-state" class="no-data-card hidden">
+                <div class="emoji">📭</div>
+                <h3>No data for this date</h3>
+                <p>Start logging your day to see insights here.</p>
+                <button id="no-data-cta" class="btn-primary-outline">
+                    Add your first activity
+                </button>
+            </div>
+
+            <div id="analytics-content" class="analytics-grid hidden">
+                <div class="summary-column">
+                    <div class="summary-card summary-large">
+                        <h3>Summary</h3>
+                        <p id="summary-text"></p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>By Category</h3>
+                        <ul id="category-list" class="category-list"></ul>
+                    </div>
+                </div>
+                <div class="chart-column">
+                    <div class="chart-card">
+                        <h3>Time per Category</h3>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Activity Durations</h3>
+                        <canvas id="activityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer footer-app">
+        <p>Designed to help you own your 24 hours ⚡</p>
+    </footer>
+
+    <script type="module">
+        import { initAuthForApp } from './js/auth.js';
+        import { initActivities } from './js/activities.js';
+        import { initAnalytics } from './js/analytics.js';
+
+        initAuthForApp();
+        initActivities();
+        initAnalytics();
+    </script>
+</body>
+
+</html>
